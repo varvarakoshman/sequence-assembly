@@ -11,37 +11,25 @@ public class DeBruijn {
 
     public static StringBuffer getEulerPath(List<EdgeStructure> list_edges, int num_edges) {
         StringBuffer result = new StringBuffer("");
-        String start_vertex = list_edges.get(0).from();
+        String start_vertex = list_edges.get(0).from();//+++++++++++++++++++++++++++
         Stack<String> stack = new Stack<>();
         stack.push(start_vertex);
         String top_vertex;
-        boolean flag = true; //исходящих ребер нет
+        HashMap<String, ArrayList<String>> adj = GraphStructure.getAdj();
+
         while (!stack.empty()) {
             top_vertex = stack.peek();
-            if (flag) {
-                outerloop:
-                for (EdgeStructure oneEdge : list_edges) {
-                    for (String vertex : GraphStructure.vertices) {
-                        if (oneEdge.from().equals(top_vertex) && oneEdge.to().equals(vertex)) {
-                            stack.push(vertex);
-                            list_edges.remove(oneEdge);
-                            break outerloop;
-                        }
-                    }
-                }
-            }
-            if (!flag) {
+            if (adj.get(top_vertex).size() == 0) {
+                result = result.append(top_vertex);
                 stack.pop();
-                if (stack.empty()) {
-                    result = result.append(top_vertex);
-                } else {
-                    result = result.append(top_vertex.charAt(top_vertex.length() - 1));
-
-                }
-            } else if (stack.size() == num_edges + 1) {
-                flag = false;
+            } else {
+                ArrayList<String> temp = adj.get(top_vertex);
+                stack.push(temp.get(0));
+                temp.remove(0);
+                adj.put(top_vertex, temp);
             }
         }
+
         return result.reverse();
     }
 
