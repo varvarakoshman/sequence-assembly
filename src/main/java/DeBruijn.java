@@ -9,19 +9,46 @@ public class DeBruijn {
     static String pref;
     static String postf;
 
-    public static StringBuffer getEulerPath(List<EdgeStructure> list_edges, int num_edges) {
-        StringBuffer result = new StringBuffer("");
-        String start_vertex = list_edges.get(0).from();//+++++++++++++++++++++++++++
-        Stack<String> stack = new Stack<>();
-        stack.push(start_vertex);
-        String top_vertex;
-        HashMap<String, ArrayList<String>> adj = GraphStructure.getAdj();
 
+    public static boolean checkIfEulerian(GraphStructure graph) {
+        int count = 0;
+        HashMap<String, Integer> degr = graph.getDegrees();
+        int value;
+        for (String key : degr.keySet()) {
+            value = degr.get(key);
+            if (value < -1 || value > 1) {
+                return false;
+            }
+            if (value != 0) {
+                count++;
+                if (value == -1) {
+                    graph.setStartKey(key);
+                }
+            }
+        }
+        if (count > 2) {
+            return false;
+        }
+        return true;
+    }
+
+
+    public static StringBuffer getEulerPath(GraphStructure graph) {
+        StringBuffer result = new StringBuffer("");
+        Stack<String> stack = new Stack<>();
+        stack.push(graph.getStartKey());
+        String top_vertex;
+        HashMap<String, ArrayList<String>> adj = graph.getAdj();
         while (!stack.empty()) {
             top_vertex = stack.peek();
-            if (adj.get(top_vertex).size() == 0) {
-                result = result.append(top_vertex);
+            if (adj.get(top_vertex) == null || adj.get(top_vertex).size() == 0) {
                 stack.pop();
+                if (stack.empty()) {
+                    result = result.append(new StringBuffer(top_vertex).reverse());
+                } else {
+                    result = result.append(top_vertex.charAt(top_vertex.length() - 1));
+
+                }
             } else {
                 ArrayList<String> temp = adj.get(top_vertex);
                 stack.push(temp.get(0));
@@ -67,7 +94,22 @@ public class DeBruijn {
         }
         List<EdgeStructure> edges = buildEdges(kmers);
         GraphStructure debr = new GraphStructure(edges);
-        Visualiser.drawGraph(edges);
-        System.out.println("genome: " + getEulerPath(edges, edges.size()));
+        debr.setStartKey(edges.get(0).from());
+        if (checkIfEulerian(debr)) {
+            StringBuffer genome = getEulerPath(debr);
+            for (int i = 0; i < genome.length(); i++) {
+                if (genome.charAt(i) == '_') {
+                    System.out.print(" ");
+                } else if (genome.charAt(i) == '#') {
+                    System.out.println();
+                } else {
+                    System.out.print(genome.charAt(i));
+                }
+            }
+            Visualiser.drawGraph(edges);
+        } else {
+            System.out.println("GRAPH IS NOT (SEMI-)EULERIAN!!!");
+            Visualiser.drawGraph(edges);
+        }
     }
 }
