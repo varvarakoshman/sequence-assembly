@@ -13,16 +13,16 @@ public class DeBruijnTest {
     private GraphStructure actual_graph = new GraphStructure(DeBruijn.buildEdges(actual_kmers));
 
     @DataProvider
-    public Object[][] caclEulerPath() {
+    public Object[][] calcEulerPath() {
         List<EdgeStructure> actual_edges = DeBruijn.buildEdges(actual_kmers);
         return new Object[][]{
                 {"GGCGATTCATCG", DeBruijn.getEulerPath(actual_edges, actual_edges.size()).toString()}
         };
     }
 
-    @Test(dataProvider = "caclEulerPath")
-    public void calc(String rezult, String actual) {
-        assertEquals(rezult, actual);
+    @Test(dataProvider = "calcEulerPath")
+    public void calc(String result, String actual) {
+        assertEquals(result, actual);
     }
 
     @Test
