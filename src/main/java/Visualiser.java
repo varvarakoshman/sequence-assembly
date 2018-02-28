@@ -12,7 +12,7 @@ public class Visualiser {
         System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
         graph.addAttribute("ui.stylesheet", "url('file:style.css')");
         int ids = 0; //уникальное id для каждого ребра
-        Iterator<String> iterator = GraphStructure.vertices.iterator();
+        Iterator<String> iterator = GraphStructure.getVertices().iterator();
         while (iterator.hasNext()) {
             graph.addNode(iterator.next());
         }

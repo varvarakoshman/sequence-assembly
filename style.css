@@ -3,13 +3,13 @@ graph {
 }
 
 node {
-	size: 20px, 20px;
+	size: 4px, 4px;
 	shape: circle;
 	fill-color: #4682B4;
 	stroke-mode: plain;
 	stroke-color: black;
         text-alignment: above;
-        text-size: 15;
+        text-size: 4;
         text-style: bold-italic;
 }
 
@@ -20,12 +20,5 @@ node:clicked {
 edge {
         shape: polyline;
         fill-color: #008080;
-        arrow-size: 10px, 5px;
-}
-
-sprite {
-	shape: flow;
-	fill-mode: plain;
-    fill-color: red;
-	sprite-orientation: from;
+        arrow-size: 4px, 2px;
 }

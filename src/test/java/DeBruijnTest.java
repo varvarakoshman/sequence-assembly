@@ -16,7 +16,7 @@ public class DeBruijnTest {
     public Object[][] calcEulerPath() {
         List<EdgeStructure> actual_edges = DeBruijn.buildEdges(actual_kmers);
         return new Object[][]{
-                {"GGCGATTCATCG", DeBruijn.getEulerPath(actual_edges, actual_edges.size()).toString()}
+                {"GGCGATTCATCG", DeBruijn.getEulerPath(actual_graph)}
         };
     }
 
